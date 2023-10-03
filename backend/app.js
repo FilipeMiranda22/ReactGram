@@ -14,6 +14,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // solve cors
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(
+  cors({ credentials: true, origin: "https://backend-reactgram.onrender.com" })
+);
 
 // upload directory
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
