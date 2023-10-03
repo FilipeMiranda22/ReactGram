@@ -1,0 +1,21 @@
+.photo-item img {
+  width: 65%;
+}
+
+.photo-box {
+  display: flex;
+  justify-content: center;
+}
+.photo-item h2 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.photo-author {
+  text-align: left;
+}
+
+.photo-author a {
+  font-weight: bold;
+  color: hsla(204, 100%, 80%, 0.9);
+}

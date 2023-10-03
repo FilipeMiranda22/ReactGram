@@ -1,0 +1,1 @@
+Lembrar de corrigir o bug quando uma foto no formato incorreto é introduzida.

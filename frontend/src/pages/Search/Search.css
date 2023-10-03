@@ -1,0 +1,20 @@
+.search {
+  width: 50%;
+  margin: 0 auto;
+  padding-top: 2em;
+}
+
+.search h2 {
+  text-align: center;
+}
+
+.search h2 span {
+  color: #45b5ff;
+}
+
+.search .btn {
+  display: block;
+  max-width: 80px;
+  text-align: center;
+  margin: 0.8em 0 2em 0;
+}

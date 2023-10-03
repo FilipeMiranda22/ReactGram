@@ -1,0 +1,8 @@
+username = filipesalomao22
+password = LNAFDbQ44em0yTni
+
+Quando se obtiver este erro: 
+D:\Documentos\React\ReactGram\backend\node_modules\bson\lib\bson.cjs:2006
+throw new BSONError('Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer');
+
+Coloque isto dentro do try/catch: const photo = await Photo.findById(new mongoose.Types.ObjectId(id));

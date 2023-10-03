@@ -1,0 +1,36 @@
+.photo-container {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 2em;
+}
+
+.photo-container img {
+  width: 100%;
+}
+
+.photo-author {
+  padding-bottom: 1em;
+}
+
+.comments {
+  text-align: left;
+}
+
+.comments form {
+  margin-bottom: 2em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #363636;
+}
+
+.author {
+  display: flex;
+  font-weight: bold;
+}
+
+.photo-container .author img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1em;
+}
