@@ -13,10 +13,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // solve cors
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
-app.use(
-  cors({ credentials: true, origin: "https://backend-reactgram.onrender.com" })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://reactgram-app.vercel.app",
+];
+app.use(cors({ credentials: true, origin: allowedOrigins }));
 
 // upload directory
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
