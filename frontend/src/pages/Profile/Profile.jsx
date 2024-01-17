@@ -128,12 +128,17 @@ const Profile = () => {
   if (loading) {
     return <p>Carregando...</p>;
   }
+
   return (
     <div className="profile">
       <div className="profile-header">
         {user.profileImage && (
           <img
             src={`${upload}/users/${user.profileImage}`}
+            onError={(e) => {
+              // Se ocorrer um erro ao carregar a imagem do servidor, mude o src para a URL do Amazon S3
+              e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/users/${user.profileImage}`;
+            }}
             alt={`${user.name}`}
           />
         )}
@@ -169,7 +174,13 @@ const Profile = () => {
           <div className="edit-photo hide" ref={editPhotoForm}>
             <p>Editando:</p>
             {editImage && (
-              <img src={`${upload}/photos/${editImage}`} alt={editTitle} />
+              <img
+                src={`${upload}/photos/${editImage}`}
+                onError={(e) => {
+                  e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/photos/${editImage}`;
+                }}
+                alt={editTitle}
+              />
             )}
             <form onSubmit={handleUpdate}>
               <input
@@ -202,6 +213,9 @@ const Profile = () => {
                   <img
                     src={`${upload}/photos/${photo.image}`}
                     alt={photo.title}
+                    onError={(e) => {
+                      e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/photos/${photo.image}`;
+                    }}
                   />
                 )}
                 {id === userAuth._id ? (

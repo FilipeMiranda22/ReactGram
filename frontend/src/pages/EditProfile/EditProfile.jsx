@@ -79,6 +79,9 @@ const EditProfile = () => {
               ? URL.createObjectURL(previewImage)
               : `${upload}/users/${user.profileImage}`
           }
+          onError={(e) => {
+            e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/users/${user.profileImage}`;
+          }}
         />
       )}
       <form onSubmit={handleSubmit}>
