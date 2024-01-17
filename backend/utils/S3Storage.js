@@ -28,6 +28,8 @@ class S3Storage {
 
     //   const fileContent = await response.arrayBuffer();
 
+    console.log(file.buffer);
+
     const ContentType = mime.getType(path.extname(file.originalname));
 
     if (!ContentType) {
@@ -42,7 +44,10 @@ class S3Storage {
         Body: file.buffer,
         ContentType,
       })
-      .promise();
+      .promise()
+      .catch((err) => {
+        console.log(err);
+      });
 
     //await fs.promises.unlink(originalPath);
   }
