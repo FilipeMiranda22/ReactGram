@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const aws = require("aws-sdk");
-const mime = require("mime");
+const mimeTypes = require("mime-types");
 
 class S3Storage {
   constructor() {
@@ -30,7 +30,7 @@ class S3Storage {
 
     console.log(file.buffer);
 
-    const ContentType = mime.getType(path.extname(file.originalname));
+    const ContentType = mimeTypes.lookup(path.extname(file.originalname));
 
     if (!ContentType) {
       throw new Error("File not found");
