@@ -11,37 +11,41 @@ class S3Storage {
   }
 
   async saveFile(filename, fieldname) {
-    const originalPath = path.resolve(
-      `https://backend-reactgram.onrender.com/uploads/${
-        fieldname === "image" ? "photos" : "users"
-      }/${filename}`
-    );
+    const imageUrl = `https://backend-reactgram.onrender.com/uploads/${
+      fieldname === "image" ? "photos" : "users"
+    }/${filename}`;
 
-    const ContentType = mime.getType(originalPath);
+    const response = await fetch(imageUrl);
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch image from ${imageUrl}. Status: ${response.status}`
+      );
+    }
+
+    const fileContent = await response.arrayBuffer();
+
+    const ContentType = mime.getType(filename);
 
     if (!ContentType) {
       throw new Error("File not found");
     }
-
-    const fileContent = await fs.promises.readFile(originalPath);
 
     this.client
       .putObject({
         Bucket: "reactgramimg",
         Key: `${fieldname === "image" ? "photos" : "users"}/${filename}`,
         ACL: "public-read",
-        Body: fileContent,
+        Body: Buffer.from(fileContent),
         ContentType,
       })
       .promise();
-
-    //await fs.promises.unlink(originalPath);
   }
 
   async deleteFile(filename) {
     await this.client
       .deleteObject({
-        Bucket: "aula-youtube",
+        Bucket: "reactgramimg",
         Key: filename,
       })
       .promise();
