@@ -12,7 +12,7 @@ class S3Storage {
 
   async saveFile(filename, fieldname) {
     const originalPath = path.resolve(
-      `../backend/uploads/${fieldname === "image" ? "photos" : "users"}`,
+      `/uploads/${fieldname === "image" ? "photos" : "users"}`,
       filename
     );
 
@@ -34,7 +34,7 @@ class S3Storage {
       })
       .promise();
 
-    await fs.promises.unlink(originalPath);
+    //await fs.promises.unlink(originalPath);
   }
 
   async deleteFile(filename) {
