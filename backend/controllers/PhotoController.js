@@ -1,12 +1,13 @@
 const Photo = require("../models/Photo");
 const User = require("../models/User");
 const mongoose = require("mongoose");
-
+const S3Storage = require("../utils/S3Storage.js");
 //Insert a photo, with a user related to it
 
 const insertPhoto = async (req, res) => {
   const { title } = req.body;
   const image = req.file.filename;
+  const { fieldname } = req.file;
 
   const reqUser = req.user;
   const user = await User.findById(reqUser._id);
@@ -19,13 +20,16 @@ const insertPhoto = async (req, res) => {
     userName: user.name,
   });
 
-  //If photo was created successfully, return data
   if (!newPhoto) {
     res
       .status(422)
       .json({ errors: ["Houve um problema, tente novamente mais tarde"] });
     return;
   }
+
+  const s3 = new S3Storage();
+
+  await s3.saveFile(image, fieldname);
 
   res.status(201).json(newPhoto);
 };

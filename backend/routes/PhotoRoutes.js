@@ -12,7 +12,7 @@ const {
   likePhoto,
   commentPhoto,
   searchPhotosByTitle,
-} = require("../controllers/PhotoController");
+} = require("../controllers/PhotoController.js");
 
 //Middlewares
 const {

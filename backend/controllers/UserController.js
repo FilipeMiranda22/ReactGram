@@ -2,6 +2,7 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const S3Storage = require("../utils/S3Storage.js");
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -105,6 +106,9 @@ const update = async (req, res) => {
 
   if (profileImage) {
     user.profileImage = profileImage;
+    const s3 = new S3Storage();
+
+    await s3.saveFile(profileImage);
   }
 
   if (bio) {
