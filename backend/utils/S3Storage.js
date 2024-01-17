@@ -14,8 +14,7 @@ class S3Storage {
     const originalPath = path.resolve(
       `https://backend-reactgram.onrender.com/uploads/${
         fieldname === "image" ? "photos" : "users"
-      }`,
-      filename
+      }/${filename}`
     );
 
     const ContentType = mime.getType(originalPath);
