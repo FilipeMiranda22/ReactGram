@@ -2,11 +2,12 @@ const Photo = require("../models/Photo");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 const S3Storage = require("../utils/S3Storage.js");
+const path = require("path");
 //Insert a photo, with a user related to it
 
 const insertPhoto = async (req, res) => {
   const { title } = req.body;
-  const image = req.file.filename;
+  const image = Date.now() + path.extname(req.file.originalname);
   const { fieldname } = req.file;
 
   const reqUser = req.user;
@@ -29,7 +30,7 @@ const insertPhoto = async (req, res) => {
 
   const s3 = new S3Storage();
 
-  await s3.saveFile(image, fieldname);
+  await s3.saveFile(image, fieldname, req.file);
 
   res.status(201).json(newPhoto);
 };

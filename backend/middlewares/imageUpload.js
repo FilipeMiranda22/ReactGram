@@ -1,9 +1,8 @@
 const multer = require("multer");
 const path = require("path");
 
-//Destination to store
-
-const imageStorage = multer.diskStorage({
+// Destination to store locally
+const diskStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     let folder = "";
 
@@ -20,14 +19,19 @@ const imageStorage = multer.diskStorage({
   },
 });
 
-const imageUpload = multer({
-  storage: imageStorage,
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg)$/)) {
-      return cb(new Error("Apenas png e jpg são formatos suportados."));
-    }
-    cb(undefined, true);
-  },
-});
+// Storage in memory
+const memoryStorage = multer.memoryStorage();
 
-module.exports = { imageUpload };
+// File filter function
+const fileFilter = (req, file, cb) => {
+  if (!file.originalname.match(/\.(png|jpg)$/)) {
+    return cb(new Error("Apenas png e jpg são formatos suportados."));
+  }
+  cb(null, true);
+};
+
+// Create separate middleware for local storage and memory storage
+const localUpload = multer({ storage: diskStorage, fileFilter });
+const memoryUpload = multer({ storage: memoryStorage, fileFilter });
+
+module.exports = { localUpload, memoryUpload };

@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs");
 const aws = require("aws-sdk");
 const mime = require("mime");
-const fetch = require("node-fetch");
 
 class S3Storage {
   constructor() {
@@ -11,41 +10,41 @@ class S3Storage {
     });
   }
 
-  async saveFile(filename, fieldname) {
-    const imageUrl = `https://backend-reactgram.onrender.com/uploads/${
-      fieldname === "image" ? "photos" : "users"
-    }/${filename}`;
+  async saveFile(filename, fieldname, file) {
+    // const imageUrl = `https://backend-reactgram.onrender.com/uploads/${
+    //   fieldname === "image" ? "photos" : "users"
+    // }/${filename}`;
 
-    try {
-      const response = await fetch(imageUrl);
+    // try {
+    //   const response = await fetch(imageUrl);
 
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch image from ${imageUrl}. Status: ${response.status}`
-        );
-      }
+    //   console.log(response);
 
-      const fileContent = await response.arrayBuffer();
+    //   if (!response.ok) {
+    //     throw new Error(
+    //       `Failed to fetch image from ${imageUrl}. Status: ${response.status}`
+    //     );
+    //   }
 
-      const ContentType = mime.getType(filename);
+    //   const fileContent = await response.arrayBuffer();
 
-      if (!ContentType) {
-        throw new Error("File not found");
-      }
+    const ContentType = mime.getType(path.extname(file.originalname));
 
-      this.client
-        .putObject({
-          Bucket: "reactgramimg",
-          Key: `${fieldname === "image" ? "photos" : "users"}/${filename}`,
-          ACL: "public-read",
-          Body: Buffer.from(fileContent),
-          ContentType,
-        })
-        .promise();
-    } catch (error) {
-      console.error("Error saving file:", error);
-      throw error; // Rejeita a promessa com o erro original
+    if (!ContentType) {
+      throw new Error("File not found");
     }
+
+    this.client
+      .putObject({
+        Bucket: "reactgramimg",
+        Key: `${fieldname === "image" ? "photos" : "users"}/${filename}`,
+        ACL: "public-read",
+        Body: file.buffer,
+        ContentType,
+      })
+      .promise();
+
+    //await fs.promises.unlink(originalPath);
   }
 
   async deleteFile(filename) {

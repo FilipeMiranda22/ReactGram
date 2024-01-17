@@ -22,13 +22,13 @@ const {
 } = require("../middlewares/photoValidation");
 const authGuard = require("../middlewares/authGuard");
 const validate = require("../middlewares/handleValidation");
-const { imageUpload } = require("../middlewares/imageUpload");
+const { localUpload, memoryUpload } = require("../middlewares/imageUpload");
 
 //Routes ( A ORDEM DAS ROTAS IMPORTA, POIS PODEM GERAR CONFLITOS ENTRE ELAS)
 router.post(
   "/",
   authGuard,
-  imageUpload.single("image"),
+  memoryUpload.single("image"),
   photoInsertValidation(),
   validate,
   insertPhoto
