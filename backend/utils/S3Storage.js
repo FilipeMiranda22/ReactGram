@@ -12,7 +12,9 @@ class S3Storage {
 
   async saveFile(filename, fieldname) {
     const originalPath = path.resolve(
-      `/uploads/${fieldname === "image" ? "photos" : "users"}`,
+      `https://backend-reactgram.onrender.com/uploads/${
+        fieldname === "image" ? "photos" : "users"
+      }`,
       filename
     );
 
