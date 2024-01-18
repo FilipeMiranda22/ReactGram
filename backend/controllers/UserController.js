@@ -82,10 +82,10 @@ const getCurrentUser = async (req, res) => {
 
 const update = async (req, res) => {
   const { name, password, bio } = req.body;
-  const image = Date.now() + path.extname(req.file.originalname);
 
   let profileImage = null;
   if (req.file) {
+    const image = Date.now() + path.extname(req.file.originalname);
     profileImage = image;
   }
 
