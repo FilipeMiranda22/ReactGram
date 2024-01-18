@@ -75,6 +75,9 @@ const Photo = () => {
                   {comment.userImage && (
                     <img
                       src={`${upload}/users/${comment.userImage}`}
+                      onError={(e) => {
+                        e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/users/${comment.userImage}`;
+                      }}
                       alt={comment.userName}
                     />
                   )}
