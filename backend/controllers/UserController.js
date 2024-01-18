@@ -2,6 +2,7 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const S3Storage = require("../utils/S3Storage.js");
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -81,10 +82,11 @@ const getCurrentUser = async (req, res) => {
 
 const update = async (req, res) => {
   const { name, password, bio } = req.body;
+  const image = Date.now() + path.extname(req.file.originalname);
 
   let profileImage = null;
   if (req.file) {
-    profileImage = req.file.filename;
+    profileImage = image;
   }
 
   const reqUser = req.user;
@@ -105,10 +107,10 @@ const update = async (req, res) => {
   }
 
   if (profileImage) {
-    user.profileImage = profileImage;
     const s3 = new S3Storage();
-
-    await s3.saveFile(profileImage);
+    await s3.deleteFile(user.profileImage);
+    user.profileImage = profileImage;
+    await s3.saveFile(profileImage, null, req.file);
   }
 
   if (bio) {

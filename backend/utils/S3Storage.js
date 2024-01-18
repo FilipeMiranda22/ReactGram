@@ -28,8 +28,6 @@ class S3Storage {
 
     //   const fileContent = await response.arrayBuffer();
 
-    console.log(file.buffer);
-
     const ContentType = mimeTypes.lookup(path.extname(file.originalname));
 
     if (!ContentType) {
@@ -52,11 +50,11 @@ class S3Storage {
     //await fs.promises.unlink(originalPath);
   }
 
-  async deleteFile(filename) {
+  async deleteFile(filename, fieldname) {
     await this.client
       .deleteObject({
         Bucket: "reactgramimg",
-        Key: filename,
+        Key: `${fieldname === "image" ? "photos" : "users"}/${filename}`,
       })
       .promise();
   }

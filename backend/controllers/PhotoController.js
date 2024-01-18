@@ -39,6 +39,7 @@ const insertPhoto = async (req, res) => {
 
 const deletePhoto = async (req, res) => {
   const { id } = req.params;
+
   const reqUser = req.user;
 
   try {
@@ -57,7 +58,13 @@ const deletePhoto = async (req, res) => {
       return;
     }
 
+    const temPropriedadeImage = photo.image ? "image" : "users";
+
     await Photo.findByIdAndDelete(photo._id);
+
+    const s3 = new S3Storage();
+
+    await s3.deleteFile(photo.image, temPropriedadeImage);
 
     res
       .status(200)
