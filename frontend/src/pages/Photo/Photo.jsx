@@ -28,12 +28,11 @@ const Photo = () => {
   const [commentDetails, setCommentDetails] = useState([]);
 
   useEffect(() => {
-    const fetchPhotoDetails = async () => {
-      if (!photo._id) {
-        // Se não há photo._id, obtém os detalhes da foto
-        await dispatch(getPhoto(id));
-      }
+    dispatch(getPhoto(id));
+  }, [dispatch, id]);
 
+  useEffect(() => {
+    const fetchPhotoDetails = async () => {
       if (photo.comments && photo.comments.length > 0) {
         const userDetails = await Promise.all(
           photo.comments.map(async (comment) => {
@@ -46,7 +45,7 @@ const Photo = () => {
     };
 
     fetchPhotoDetails();
-  }, [dispatch, id, photo._id, photo.comments]);
+  }, [dispatch, photo.comments]);
 
   const handleLike = () => {
     dispatch(like(photo._id));
@@ -89,25 +88,26 @@ const Photo = () => {
               <input type="submit" value="Enviar" />
             </form>
             {photo.comments.length === 0 && <p>Não há comentários</p>}
-            {commentDetails.map((comment) => (
-              <div className="comment" key={comment.comment}>
-                <div className="author">
-                  {comment.user.payload.profileImage && (
-                    <img
-                      src={`${upload}/users/${comment.user.payload.profileImage}`}
-                      onError={(e) => {
-                        e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/users/${comment.user.payload.profileImage}`;
-                      }}
-                      alt={comment.userName}
-                    />
-                  )}
-                  <Link to={`/users/${comment.userId}`}>
-                    <p>{comment.userName}</p>
-                  </Link>
+            {photo.comments.length > 0 &&
+              commentDetails.map((comment) => (
+                <div className="comment" key={comment.comment}>
+                  <div className="author">
+                    {comment.user.payload.profileImage && (
+                      <img
+                        src={`${upload}/users/${comment.user.payload.profileImage}`}
+                        onError={(e) => {
+                          e.target.src = `https://reactgramimg.s3.sa-east-1.amazonaws.com/users/${comment.user.payload.profileImage}`;
+                        }}
+                        alt={comment.userName}
+                      />
+                    )}
+                    <Link to={`/users/${comment.userId}`}>
+                      <p>{comment.userName}</p>
+                    </Link>
+                  </div>
+                  <p>{comment.comment}</p>
                 </div>
-                <p>{comment.comment}</p>
-              </div>
-            ))}
+              ))}
           </>
         )}
       </div>
